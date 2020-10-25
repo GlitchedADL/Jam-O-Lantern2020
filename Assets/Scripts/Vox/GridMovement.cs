@@ -69,6 +69,5 @@ public class GridMovement : MonoBehaviour
             slideY = Mathf.Lerp(0,gridSize*vMov,normalizedTime);
             transform.position = new Vector3(gridXlast*gridSize+slideX,gridYlast*gridSize+slideY,0);
         }
-        slideX+=(gridX-slideX);
     }
 }
