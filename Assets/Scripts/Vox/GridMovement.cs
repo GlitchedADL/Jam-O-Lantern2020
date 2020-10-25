@@ -18,9 +18,11 @@ public class GridMovement : MonoBehaviour
     int hMov = 0;
     int vMov = 0;
     bool moving = false;
+    Animator animator;
     void Start(){
         gridX = (int)Mathf.Round(transform.position.x/(float)gridSize);
         gridY = (int)Mathf.Round(transform.position.y/(float)gridSize);
+        animator = GetComponent<Animator>();
     }
     // Update is called once per frame
     void Update()
@@ -53,6 +55,7 @@ public class GridMovement : MonoBehaviour
                 vMov = 1;
                 moving = true;
             }
+            animator.SetBool("moving",moving);
             timeElapsed = 0f;
         }
         
@@ -60,10 +63,11 @@ public class GridMovement : MonoBehaviour
         if (moving){
             if (timeElapsed>moveDuration){
                 moving = false;
+                animator.SetBool("moving",false);
             } else {
                 timeElapsed += Time.deltaTime;
                 normalizedTime = timeElapsed / moveDuration;
-                normalizedTime = Easing.Cubic.InOut(normalizedTime);
+                normalizedTime = Easing.Cubic.Out(normalizedTime);//Easing.Cubic.InOut(normalizedTime);
             }
             slideX = Mathf.Lerp(0,gridSize*hMov,normalizedTime);
             slideY = Mathf.Lerp(0,gridSize*vMov,normalizedTime);
