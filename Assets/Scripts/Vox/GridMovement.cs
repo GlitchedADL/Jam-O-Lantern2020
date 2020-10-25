@@ -57,6 +57,8 @@ public class GridMovement : MonoBehaviour
             }
             animator.SetBool("moving",moving);
             timeElapsed = 0f;
+            gridX = (int)Mathf.Clamp(gridX,0,14);
+            gridY = (int)Mathf.Clamp(gridY,0,9);
         }
         
         //lerp to grid position
@@ -71,6 +73,13 @@ public class GridMovement : MonoBehaviour
             }
             slideX = Mathf.Lerp(0,gridSize*hMov,normalizedTime);
             slideY = Mathf.Lerp(0,gridSize*vMov,normalizedTime);
+            // lock sliding value to 10x15 grid
+            if (Mathf.Abs(gridX-7)==7 && gridX==gridXlast){
+                slideX = 0;
+            }
+            if (Mathf.Abs((float)gridY-4.5f)==4.5f && gridY==gridYlast){
+                slideY = 0;
+            }
             transform.position = new Vector3(gridXlast*gridSize+slideX,gridYlast*gridSize+slideY,0);
         }
     }
