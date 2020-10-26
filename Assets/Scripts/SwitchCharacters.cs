@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using UnityEngine;
 
-public class CharacterSwitcher : MonoBehaviour
+public class SwitchCharacters : MonoBehaviour
 {
     public GameObject[] characters = new GameObject[3];
     // Start is called before the first frame update
@@ -33,8 +33,6 @@ public class CharacterSwitcher : MonoBehaviour
 
     void ToggleActiveChar(int i)
     {
-        UnityEngine.Debug.Log(i);
-
         foreach(GameObject obj in characters)
         {
             if(System.Array.IndexOf(characters, obj) == i)
