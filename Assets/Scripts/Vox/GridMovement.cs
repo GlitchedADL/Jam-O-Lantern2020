@@ -69,6 +69,8 @@ public class GridMovement : MonoBehaviour
             } else {
                 timeElapsed += Time.deltaTime;
                 normalizedTime = timeElapsed / moveDuration;
+                animator.SetFloat("normalizedTime",normalizedTime);
+                animator.SetFloat("multiplier",1/moveDuration);
                 normalizedTime = Easing.Cubic.Out(normalizedTime);//Easing.Cubic.InOut(normalizedTime);
             }
             slideX = Mathf.Lerp(0,gridSize*hMov,normalizedTime);
@@ -81,6 +83,7 @@ public class GridMovement : MonoBehaviour
                 slideY = 0;
             }
             transform.position = new Vector3(gridXlast*gridSize+slideX,gridYlast*gridSize+slideY,0);
+            
         }
     }
 }
