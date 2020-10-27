@@ -11,6 +11,7 @@ public class GridMovement : MonoBehaviour
     [SerializeField] int gridX = 0;
     [SerializeField] int gridY = 0;
     [SerializeField] float playerScale = 0.5f;
+    [SerializeField] Transform castPos;
     int gridXlast = 0;
     int gridYlast = 0;
     float slideX = 0;
@@ -33,27 +34,44 @@ public class GridMovement : MonoBehaviour
             vMov = 0;
             gridXlast = gridX;
             gridYlast = gridY;
+            Debug.DrawLine(castPos.position,castPos.position+Vector3.right*gridSize*2,Color.red);
+            Debug.DrawLine(castPos.position,castPos.position+Vector3.left*gridSize*2,Color.blue);
+            Debug.DrawLine(castPos.position,castPos.position+Vector3.up*gridSize*2,Color.green);
+            Debug.DrawLine(castPos.position,castPos.position+Vector3.down*gridSize*2,Color.magenta);
             if (Input.GetKeyDown(KeyCode.D)){
-                gridX++;
-                hMov = 1;
-                moving = true;
+                RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.right*gridSize*2);
+                if (Rray.Length<2){
+                    gridX++;
+                    hMov = 1;
+                    moving = true;
+                }
+                
                 transform.localScale = new Vector3(-playerScale,playerScale,playerScale);
             }
             if (Input.GetKeyDown(KeyCode.A)){
-                gridX--;
-                hMov = -1;
-                moving = true;
+                RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize*2);
+                if (Rray.Length<2){
+                    gridX--;
+                    hMov = -1;
+                    moving = true;
+                }
                 transform.localScale = new Vector3(playerScale,playerScale,playerScale);
             }
             if (Input.GetKeyDown(KeyCode.S)){
-                gridY--;
-                vMov = -1;
-                moving = true;
+                RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize*2);
+                if (Rray.Length<2){
+                    gridY--;
+                    vMov = -1;
+                    moving = true;
+                }
             }
             if (Input.GetKeyDown(KeyCode.W)){
-                gridY++;
-                vMov = 1;
-                moving = true;
+                RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize*2);
+                if (Rray.Length<2){
+                    gridY++;
+                    vMov = 1;
+                    moving = true;
+                }
             }
             animator.SetBool("moving",moving);
             timeElapsed = 0f;
@@ -71,7 +89,7 @@ public class GridMovement : MonoBehaviour
                 normalizedTime = timeElapsed / moveDuration;
                 animator.SetFloat("normalizedTime",normalizedTime);
                 animator.SetFloat("multiplier",1/moveDuration);
-                normalizedTime = Easing.Cubic.Out(normalizedTime);//Easing.Cubic.InOut(normalizedTime);
+                normalizedTime = Easing.Cubic.Out(normalizedTime);
             }
             slideX = Mathf.Lerp(0,gridSize*hMov,normalizedTime);
             slideY = Mathf.Lerp(0,gridSize*vMov,normalizedTime);
