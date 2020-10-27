@@ -5,8 +5,8 @@ using UnityEngine;
 public class PlayerMovement : MonoBehaviour
 {
     public float moveSpeed = 5f;
-    private Rigidbody2D rb;
     Vector2 movement;
+    Rigidbody2D rb;
 
     void Start()
     {
@@ -23,6 +23,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void FixedUpdate(){
-        rb.MovePosition(rb.position + movement*moveSpeed*Time.fixedDeltaTime);
+        transform.Translate(movement*moveSpeed*Time.fixedDeltaTime);
     }
 }
