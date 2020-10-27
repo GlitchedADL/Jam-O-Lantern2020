@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GridMovement : MonoBehaviour
 {
+    #region INITIALIZE_VARS
+    [SerializeField] bool charCanPush = true;
     [SerializeField] int gridSize = 1;
     [SerializeField] float moveDuration = 1.0f;
     float timeElapsed = 0f;
@@ -12,14 +14,18 @@ public class GridMovement : MonoBehaviour
     [SerializeField] int gridY = 0;
     [SerializeField] float playerScale = 0.5f;
     [SerializeField] Transform castPos;
+    Transform movingTomb = null;
     int gridXlast = 0;
     int gridYlast = 0;
+    const int GRIDW = 14;
+    const int GRIDH = 9;
     float slideX = 0;
     float slideY = 0;
     int hMov = 0;
     int vMov = 0;
     bool moving = false;
     Animator animator;
+    #endregion
     void Start(){
         gridX = (int)Mathf.Round(transform.position.x/(float)gridSize);
         gridY = (int)Mathf.Round(transform.position.y/(float)gridSize);
@@ -30,6 +36,7 @@ public class GridMovement : MonoBehaviour
     {
         //change grid position
         if (!moving){
+            movingTomb = null;
             hMov = 0;
             vMov = 0;
             gridXlast = gridX;
@@ -38,45 +45,97 @@ public class GridMovement : MonoBehaviour
             Debug.DrawLine(castPos.position,castPos.position+Vector3.left*gridSize*2,Color.blue);
             Debug.DrawLine(castPos.position,castPos.position+Vector3.up*gridSize*2,Color.green);
             Debug.DrawLine(castPos.position,castPos.position+Vector3.down*gridSize*2,Color.magenta);
+            //movingTomb transform is set in INPUTMOVE
+            #region INPUTMOVE
             if (Input.GetKeyDown(KeyCode.D)){
                 RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.right*gridSize*2);
                 if (Rray.Length<2){
-                    gridX++;
-                    hMov = 1;
-                    moving = true;
+                    if (Rray.Length==1){
+                        if (charCanPush){
+                            // make sure player is 1 away from edge so they don't push tomb over gate
+                            if (gridX<GRIDW-1){
+                                movingTomb = Rray[0].transform;
+                                GoRight();
+                            }
+                        } else {
+                            // if char is not right next to tomb
+                            if (Vector3.Distance(Rray[0].transform.position,castPos.position)>gridSize){
+                                GoRight();
+                            }
+                        }
+                    } else { // no tomb
+                        GoRight();
+                    }
                 }
-                
                 transform.localScale = new Vector3(-playerScale,playerScale,playerScale);
-            }
-            if (Input.GetKeyDown(KeyCode.A)){
+            } else if (Input.GetKeyDown(KeyCode.A)){
                 RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize*2);
                 if (Rray.Length<2){
-                    gridX--;
-                    hMov = -1;
-                    moving = true;
+                    if (Rray.Length==1){
+                        if (charCanPush){
+                            // make sure player is 1 away from edge so they don't push tomb over gate
+                            if (gridX>1 && charCanPush){
+                                movingTomb = Rray[0].transform;
+                                GoLeft();
+                            }
+                        } else {
+                            // if char is not right next to tomb
+                            if (Vector3.Distance(Rray[0].transform.position,castPos.position)>gridSize){
+                                GoLeft();
+                            }
+                        }
+                    } else { // no tomb
+                        GoLeft();
+                    }
                 }
                 transform.localScale = new Vector3(playerScale,playerScale,playerScale);
-            }
-            if (Input.GetKeyDown(KeyCode.S)){
+            } else if (Input.GetKeyDown(KeyCode.S)){
                 RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize*2);
                 if (Rray.Length<2){
-                    gridY--;
-                    vMov = -1;
-                    moving = true;
+                    if (Rray.Length==1){
+                        if (charCanPush){
+                            // make sure player is 1 away from edge so they don't push tomb over gate
+                            if (gridY>1 && charCanPush){
+                                movingTomb = Rray[0].transform;
+                                GoDown();
+                            }
+                        } else {
+                            // if char is not right next to tomb
+                            if (Vector3.Distance(Rray[0].transform.position,castPos.position)>gridSize){
+                                GoDown();
+                            }
+                        }
+                    } else { // no tomb
+                        GoDown();
+                    }
                 }
-            }
-            if (Input.GetKeyDown(KeyCode.W)){
+            } else if (Input.GetKeyDown(KeyCode.W)){
                 RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize*2);
                 if (Rray.Length<2){
-                    gridY++;
-                    vMov = 1;
-                    moving = true;
+                    if (Rray.Length==1){
+                        if (charCanPush){
+                            // make sure player is 1 away from edge so they don't push tomb over gate
+                            if (gridY<GRIDH-1 && charCanPush){
+                                movingTomb = Rray[0].transform;
+                                GoUp();
+                            }
+                        } else {
+                            // if char is not right next to tomb
+                            if (Vector3.Distance(Rray[0].transform.position,castPos.position)>gridSize){
+                                GoUp();
+                            }
+                        }
+                    } else { // no tomb
+                        GoUp();
+                    }
                 }
             }
+            #endregion
+
             animator.SetBool("moving",moving);
             timeElapsed = 0f;
-            gridX = (int)Mathf.Clamp(gridX,0,14);
-            gridY = (int)Mathf.Clamp(gridY,0,9);
+            gridX = (int)Mathf.Clamp(gridX,0,GRIDW);
+            gridY = (int)Mathf.Clamp(gridY,0,GRIDH);
         }
         
         //lerp to grid position
@@ -94,14 +153,38 @@ public class GridMovement : MonoBehaviour
             slideX = Mathf.Lerp(0,gridSize*hMov,normalizedTime);
             slideY = Mathf.Lerp(0,gridSize*vMov,normalizedTime);
             // lock sliding value to 10x15 grid
-            if (Mathf.Abs(gridX-7)==7 && gridX==gridXlast){
+            if (Mathf.Abs(gridX-GRIDW/2)==GRIDW/2 && gridX==gridXlast){
                 slideX = 0;
             }
-            if (Mathf.Abs((float)gridY-4.5f)==4.5f && gridY==gridYlast){
+            if (Mathf.Abs((float)gridY-GRIDH/2)==GRIDH/2 && gridY==gridYlast){
                 slideY = 0;
             }
             transform.position = new Vector3(gridXlast*gridSize+slideX,gridYlast*gridSize+slideY,0);
-            
+            if (movingTomb!=null){
+                if (Vector3.Distance(movingTomb.position,castPos.position)<=gridSize){
+                    movingTomb.position = castPos.position + (Vector3.right*hMov + Vector3.up*vMov)*gridSize;
+                }
+            }
         }
+    }
+    void GoRight(){
+        gridX++;
+        hMov = 1;
+        moving = true;
+    }
+    void GoLeft(){
+        gridX--;
+        hMov = -1;
+        moving = true;
+    }
+    void GoUp(){
+        gridY++;
+        vMov = 1;
+        moving = true;
+    }
+    void GoDown(){
+        gridY--;
+        vMov = -1;
+        moving = true;
     }
 }
