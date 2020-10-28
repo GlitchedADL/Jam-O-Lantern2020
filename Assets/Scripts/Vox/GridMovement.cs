@@ -156,7 +156,7 @@ public class GridMovement : MonoBehaviour
             if (Mathf.Abs(gridX-GRIDW/2)==GRIDW/2 && gridX==gridXlast){
                 slideX = 0;
             }
-            if (Mathf.Abs((float)gridY-GRIDH/2)==GRIDH/2 && gridY==gridYlast){
+            if (Mathf.Abs((float)gridY-(float)GRIDH/2)==(float)GRIDH/2 && gridY==gridYlast){
                 slideY = 0;
             }
             transform.position = new Vector3(gridXlast*gridSize+slideX,gridYlast*gridSize+slideY,0);
