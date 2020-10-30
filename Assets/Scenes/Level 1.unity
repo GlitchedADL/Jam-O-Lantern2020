@@ -13419,6 +13419,7 @@ MonoBehaviour:
   gridY: 0
   playerScale: 1
   castPos: {fileID: 607314275}
+  ghost: 0
 --- !u!114 &2886758650987727300
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -13952,6 +13953,7 @@ MonoBehaviour:
   gridY: 0
   playerScale: 0.375
   castPos: {fileID: 731125439}
+  ghost: 0
 --- !u!114 &4856404658028151887
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -15229,6 +15231,7 @@ MonoBehaviour:
   gridY: 0
   playerScale: 1
   castPos: {fileID: 1791909187}
+  ghost: 1
 --- !u!114 &9072053417815219624
 MonoBehaviour:
   m_ObjectHideFlags: 0
