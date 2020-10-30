@@ -24,16 +24,26 @@ public class GridMovement : MonoBehaviour
     int hMov = 0;
     int vMov = 0;
     bool moving = false;
+    int gridXstart;
+    int gridYstart;
     Animator animator;
     #endregion
     void Start(){
-        gridX = (int)Mathf.Round(transform.position.x/(float)gridSize);
-        gridY = (int)Mathf.Round(transform.position.y/(float)gridSize);
+        gridXstart = (int)Mathf.Round(transform.position.x/(float)gridSize);
+        gridYstart = (int)Mathf.Round(transform.position.y/(float)gridSize);
+        ResetPos();
         animator = GetComponent<Animator>();
+    }
+    public void ResetPos(){
+        gridX = gridXstart;
+        gridY = gridYstart;
+        gridXlast = gridXstart;
+        gridYlast = gridYstart;
     }
     // Update is called once per frame
     void Update()
     {
+        
         //change grid position
         if (!moving){
             movingTomb = null;

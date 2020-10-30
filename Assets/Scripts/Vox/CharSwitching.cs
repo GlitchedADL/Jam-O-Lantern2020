@@ -30,6 +30,13 @@ public class CharSwitching : MonoBehaviour
         {
             ToggleActiveChar(2);
         }
+        // reset character positions when pressed r
+        if (Input.GetKeyDown(KeyCode.R)){
+            foreach(GameObject obj in characters)
+            {
+                obj.GetComponent<GridMovement>().ResetPos();
+            }
+        }
     }
 
     void ToggleActiveChar(int i)

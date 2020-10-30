@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 5107873583832090690}
   - component: {fileID: 1180859420301542817}
   - component: {fileID: -7279863770271890155}
+  - component: {fileID: 910212234843223895}
   m_Layer: 0
   m_Name: Gravestone
   m_TagString: Untagged
@@ -142,5 +143,17 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 316d35a35587734448d2c3f46b05d833, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &910212234843223895
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6536939424199595}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: dd361bff0c99aee4396fad8a41563e06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
