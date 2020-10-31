@@ -6723,7 +6723,8 @@ GameObject:
   m_Component:
   - component: {fileID: 834401474}
   - component: {fileID: 834401475}
-  m_Layer: 0
+  - component: {fileID: 834401476}
+  m_Layer: 11
   m_Name: ZombieEndPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -6795,6 +6796,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &834401476
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 834401473}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.59166664, y: 0.6}
+    newSize: {x: 0.59166664, y: 0.6}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.59166664, y: 0.6}
+  m_EdgeRadius: 0
 --- !u!1001 &851840706
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -9791,7 +9818,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1168242437}
   - component: {fileID: 1168242438}
-  m_Layer: 0
+  - component: {fileID: 1168242439}
+  m_Layer: 11
   m_Name: SkeleEndPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -9863,6 +9891,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &1168242439
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168242436}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.59166664, y: 0.6}
+    newSize: {x: 0.59166664, y: 0.6}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.59166664, y: 0.6}
+  m_EdgeRadius: 0
 --- !u!1001 &1171370888
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17639,7 +17693,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2114701317}
   - component: {fileID: 2114701318}
-  m_Layer: 0
+  - component: {fileID: 2114701319}
+  m_Layer: 11
   m_Name: GhostEndPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -17711,6 +17766,32 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!61 &2114701319
+BoxCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2114701316}
+  m_Enabled: 1
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_UsedByEffector: 0
+  m_UsedByComposite: 0
+  m_Offset: {x: 0, y: 0}
+  m_SpriteTilingProperty:
+    border: {x: 0, y: 0, z: 0, w: 0}
+    pivot: {x: 0.5, y: 0.5}
+    oldSize: {x: 0.59166664, y: 0.6}
+    newSize: {x: 0.59166664, y: 0.6}
+    adaptiveTilingThreshold: 0.5
+    drawMode: 0
+    adaptiveTiling: 0
+  m_AutoTiling: 0
+  serializedVersion: 2
+  m_Size: {x: 0.59166664, y: 0.6}
+  m_EdgeRadius: 0
 --- !u!1001 &2122682176
 PrefabInstance:
   m_ObjectHideFlags: 0

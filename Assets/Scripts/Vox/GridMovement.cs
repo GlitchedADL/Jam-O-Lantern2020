@@ -59,10 +59,28 @@ public class GridMovement : MonoBehaviour
             //movingTomb transform is set in INPUTMOVE
             #region INPUTMOVE
             if (Input.GetKeyDown(KeyCode.D)){
+                RaycastHit2D[] Eray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.right*gridSize*2,LayerMask.GetMask("EndPlatform"));
                 if (ghost){
                     RaycastHit2D[] Gray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.right*gridSize,LayerMask.GetMask("GhostWall"));
                     if (Gray.Length==0){
-                        GoRight();
+                        if (Eray.Length>0){
+                            if (Eray[0].collider.name=="GhostEndPlatform"){
+                                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>0){
+                                    GoRight();
+                                } else {//ghost is on end platform
+                                    if (Eray.Length>1){
+                                        //make sure another end platform isn't in the way
+                                        if (Vector3.Distance(Eray[1].transform.position,castPos.position)!=gridSize){
+                                            GoRight();
+                                        }
+                                    } else {// no end platform in the way
+                                        GoRight();
+                                    }
+                                }
+                            }
+                        } else {
+                            GoRight();
+                        }
                     }
                 } else {
                     RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.right*gridSize*2,LayerMask.GetMask("Gravestone"));
@@ -87,10 +105,28 @@ public class GridMovement : MonoBehaviour
                 }
                 transform.localScale = new Vector3(-playerScale,playerScale,playerScale);
             } else if (Input.GetKeyDown(KeyCode.A)){
+                RaycastHit2D[] Eray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize*2,LayerMask.GetMask("EndPlatform"));
                 if (ghost){
                     RaycastHit2D[] Gray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize,LayerMask.GetMask("GhostWall"));
                     if (Gray.Length==0){
-                        GoLeft();
+                        if (Eray.Length>0){
+                            if (Eray[0].collider.name=="GhostEndPlatform"){
+                                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>0){
+                                    GoLeft();
+                                } else {//ghost is on end platform
+                                    if (Eray.Length>1){
+                                        //make sure another end platform isn't in the way
+                                        if (Vector3.Distance(Eray[1].transform.position,castPos.position)!=gridSize){
+                                            GoLeft();
+                                        }
+                                    } else {// no end platform in the way
+                                        GoLeft();
+                                    }
+                                }
+                            }
+                        } else {
+                            GoLeft();
+                        }
                     }
                 } else {
                     RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize*2,LayerMask.GetMask("Gravestone"));
@@ -115,10 +151,28 @@ public class GridMovement : MonoBehaviour
                 }
                 transform.localScale = new Vector3(playerScale,playerScale,playerScale);
             } else if (Input.GetKeyDown(KeyCode.S)){ // it do go down!! :V
+                RaycastHit2D[] Eray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize*2,LayerMask.GetMask("EndPlatform"));
                 if (ghost){
                     RaycastHit2D[] Gray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize,LayerMask.GetMask("GhostWall"));
                     if (Gray.Length==0){
-                        GoDown();
+                        if (Eray.Length>0){
+                            if (Eray[0].collider.name=="GhostEndPlatform"){
+                                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>0){
+                                    GoDown();
+                                } else {//ghost is on end platform
+                                    if (Eray.Length>1){
+                                        //make sure another end platform isn't in the way
+                                        if (Vector3.Distance(Eray[1].transform.position,castPos.position)!=gridSize){
+                                            GoDown();
+                                        }
+                                    } else {// no end platform in the way
+                                        GoDown();
+                                    }
+                                }
+                            }
+                        } else {
+                            GoDown();
+                        }
                     }
                 } else {
                     RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize*2,LayerMask.GetMask("Gravestone"));
@@ -142,10 +196,28 @@ public class GridMovement : MonoBehaviour
                     }
                 }
             } else if (Input.GetKeyDown(KeyCode.W)){
+                RaycastHit2D[] Eray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize*2,LayerMask.GetMask("EndPlatform"));
                 if (ghost){
                     RaycastHit2D[] Gray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize,LayerMask.GetMask("GhostWall"));
                     if (Gray.Length==0){
-                        GoUp();
+                        if (Eray.Length>0){
+                            if (Eray[0].collider.name=="GhostEndPlatform"){
+                                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>0){
+                                    GoUp();
+                                } else {//ghost is on end platform
+                                    if (Eray.Length>1){
+                                        //make sure another end platform isn't in the way
+                                        if (Vector3.Distance(Eray[1].transform.position,castPos.position)!=gridSize){
+                                            GoUp();
+                                        }
+                                    } else {// no end platform in the way
+                                        GoUp();
+                                    }
+                                }
+                            }
+                        } else {
+                            GoUp();
+                        }
                     }
                 } else {
                     RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize*2,LayerMask.GetMask("Gravestone"));
