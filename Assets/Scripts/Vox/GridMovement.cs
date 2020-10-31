@@ -93,7 +93,7 @@ public class GridMovement : MonoBehaviour
                         GoLeft();
                     }
                 } else {
-                    RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize*2);
+                    RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize*2,LayerMask.GetMask("Gravestone"));
                     if (Rray.Length<2){
                         if (Rray.Length==1){
                             if (charCanPush){
@@ -121,7 +121,7 @@ public class GridMovement : MonoBehaviour
                         GoDown();
                     }
                 } else {
-                    RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize*2);
+                    RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize*2,LayerMask.GetMask("Gravestone"));
                     if (Rray.Length<2){
                         if (Rray.Length==1){
                             if (charCanPush){
@@ -148,7 +148,7 @@ public class GridMovement : MonoBehaviour
                         GoUp();
                     }
                 } else {
-                    RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize*2);
+                    RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize*2,LayerMask.GetMask("Gravestone"));
                     if (Rray.Length<2){
                         if (Rray.Length==1){
                             if (charCanPush){

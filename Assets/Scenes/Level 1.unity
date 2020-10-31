@@ -6724,7 +6724,7 @@ GameObject:
   - component: {fileID: 834401474}
   - component: {fileID: 834401475}
   m_Layer: 0
-  m_Name: 002_UIsprites_2
+  m_Name: ZombieEndPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -9792,7 +9792,7 @@ GameObject:
   - component: {fileID: 1168242437}
   - component: {fileID: 1168242438}
   m_Layer: 0
-  m_Name: 002_UIsprites_1
+  m_Name: SkeleEndPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -17640,7 +17640,7 @@ GameObject:
   - component: {fileID: 2114701317}
   - component: {fileID: 2114701318}
   m_Layer: 0
-  m_Name: 002_UIsprites_0
+  m_Name: GhostEndPlatform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
