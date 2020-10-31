@@ -89,8 +89,16 @@ public class GridMovement : MonoBehaviour
                             if (charCanPush){
                                 // make sure player is 1 away from edge so they don't push tomb over gate
                                 if (gridX<GRIDW-1){
-                                    movingTomb = Rray[0].transform;
-                                    GoRight();
+                                    //make sure endplatform isn't in the way so it doesn't push tomb over endplatform
+                                    if (Eray.Length>0){
+                                        if (Vector3.Distance(Eray[0].transform.position,castPos.position)!=gridSize*2){
+                                            movingTomb = Rray[0].transform;
+                                            GoRight();
+                                        }
+                                    } else {
+                                        movingTomb = Rray[0].transform;
+                                        GoRight();
+                                    }
                                 }
                             } else {
                                 // if char is not right next to tomb
@@ -135,8 +143,16 @@ public class GridMovement : MonoBehaviour
                             if (charCanPush){
                                 // make sure player is 1 away from edge so they don't push tomb over gate
                                 if (gridX>1 && charCanPush){
-                                    movingTomb = Rray[0].transform;
-                                    GoLeft();
+                                    //make sure endplatform isn't in the way so it doesn't push tomb over endplatform
+                                    if (Eray.Length>0){
+                                        if (Vector3.Distance(Eray[0].transform.position,castPos.position)!=gridSize*2){
+                                            movingTomb = Rray[0].transform;
+                                            GoLeft();
+                                        }
+                                    } else {
+                                        movingTomb = Rray[0].transform;
+                                        GoLeft();
+                                    }
                                 }
                             } else {
                                 // if char is not right next to tomb
@@ -181,8 +197,16 @@ public class GridMovement : MonoBehaviour
                             if (charCanPush){
                                 // make sure player is 1 away from edge so they don't push tomb over gate
                                 if (gridY>1 && charCanPush){
-                                    movingTomb = Rray[0].transform;
-                                    GoDown();
+                                    //make sure endplatform isn't in the way so it doesn't push tomb over endplatform
+                                    if (Eray.Length>0){
+                                        if (Vector3.Distance(Eray[0].transform.position,castPos.position)!=gridSize*2){
+                                            movingTomb = Rray[0].transform;
+                                            GoDown();
+                                        }
+                                    } else {
+                                        movingTomb = Rray[0].transform;
+                                        GoDown();
+                                    }
                                 }
                             } else {
                                 // if char is not right next to tomb
@@ -226,8 +250,16 @@ public class GridMovement : MonoBehaviour
                             if (charCanPush){
                                 // make sure player is 1 away from edge so they don't push tomb over gate
                                 if (gridY<GRIDH-1 && charCanPush){
-                                    movingTomb = Rray[0].transform;
-                                    GoUp();
+                                    //make sure endplatform isn't in the way so it doesn't push tomb over endplatform
+                                    if (Eray.Length>0){
+                                        if (Vector3.Distance(Eray[0].transform.position,castPos.position)!=gridSize*2){
+                                            movingTomb = Rray[0].transform;
+                                            GoUp();
+                                        }
+                                    } else {
+                                        movingTomb = Rray[0].transform;
+                                        GoUp();
+                                    }
                                 }
                             } else {
                                 // if char is not right next to tomb
