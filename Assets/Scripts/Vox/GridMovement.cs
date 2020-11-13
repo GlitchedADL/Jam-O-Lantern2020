@@ -28,6 +28,8 @@ public class GridMovement : MonoBehaviour
     int gridXstart;
     int gridYstart;
     Animator animator;
+    delegate void GoDir();
+    GoDir myGoDir;
     #endregion
     void Start(){
         gridXstart = (int)Mathf.Round(transform.position.x/(float)gridSize);
@@ -41,6 +43,32 @@ public class GridMovement : MonoBehaviour
         gridXlast = gridXstart;
         gridYlast = gridYstart;
     }
+
+    void EndMove(RaycastHit2D[] Eray, string nEnd, GoDir mydir){
+        if (Eray.Length>0){
+            if (Eray[0].collider.name==nEnd){//closest end platform matches specified character
+                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>0){//character isn't on end platform
+                    mydir();
+                } else {//character is on end platform
+                    if (Eray.Length>1){
+                        //make sure another end platform isn't in the way
+                        if (Vector3.Distance(Eray[1].transform.position,castPos.position)!=gridSize){
+                            mydir();
+                        }
+                    } else {// no end platform in the way
+                        mydir();
+                    }
+                }
+            } else {//closest end platform isn't the same as character
+                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>gridSize){
+                    mydir();//? think that's right GOTTA CHECK
+                }
+            }
+        } else {
+            mydir();
+        }
+    }
+    
     // Update is called once per frame
     void Update()
     {
@@ -59,28 +87,12 @@ public class GridMovement : MonoBehaviour
             //movingTomb transform is set in INPUTMOVE
             #region INPUTMOVE
             if (Input.GetKeyDown(KeyCode.D)){
+                myGoDir = GoRight;
                 RaycastHit2D[] Eray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.right*gridSize*2,LayerMask.GetMask("EndPlatform"));
                 if (ghost){
                     RaycastHit2D[] Gray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.right*gridSize,LayerMask.GetMask("GhostWall"));
                     if (Gray.Length==0){
-                        if (Eray.Length>0){
-                            if (Eray[0].collider.name=="GhostEndPlatform"){
-                                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>0){
-                                    GoRight();
-                                } else {//ghost is on end platform
-                                    if (Eray.Length>1){
-                                        //make sure another end platform isn't in the way
-                                        if (Vector3.Distance(Eray[1].transform.position,castPos.position)!=gridSize){
-                                            GoRight();
-                                        }
-                                    } else {// no end platform in the way
-                                        GoRight();
-                                    }
-                                }
-                            }
-                        } else {
-                            GoRight();
-                        }
+                        EndMove(Eray,"GhostEndPlatform",myGoDir);
                     }
                 } else {
                     RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.right*gridSize*2,LayerMask.GetMask("Gravestone"));
@@ -93,48 +105,40 @@ public class GridMovement : MonoBehaviour
                                     if (Eray.Length>0){
                                         if (Vector3.Distance(Eray[0].transform.position,castPos.position)!=gridSize*2){
                                             movingTomb = Rray[0].transform;
-                                            GoRight();
+                                            EndMove(Eray,"ZombieEndPlatform",myGoDir);
                                         }
                                     } else {
                                         movingTomb = Rray[0].transform;
-                                        GoRight();
+                                        myGoDir();
                                     }
                                 }
                             } else {
                                 // if char is not right next to tomb
                                 if (Vector3.Distance(Rray[0].transform.position,castPos.position)>gridSize){
-                                    GoRight();
+                                    EndMove(Eray,"SkeleEndPlatform",myGoDir);
                                 }
                             }
                         } else { // no tomb
-                            GoRight();
+                            if (Eray.Length == 0){
+                                myGoDir();
+                            } else {
+                                if (charCanPush){
+                                    EndMove(Eray,"ZombieEndPlatform",myGoDir);
+                                } else {
+                                    EndMove(Eray,"SkeleEndPlatform",myGoDir);
+                                }
+                            }
                         }
                     }
                 }
                 transform.localScale = new Vector3(-playerScale,playerScale,playerScale);
             } else if (Input.GetKeyDown(KeyCode.A)){
+                myGoDir = GoLeft;
                 RaycastHit2D[] Eray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize*2,LayerMask.GetMask("EndPlatform"));
                 if (ghost){
                     RaycastHit2D[] Gray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize,LayerMask.GetMask("GhostWall"));
                     if (Gray.Length==0){
-                        if (Eray.Length>0){
-                            if (Eray[0].collider.name=="GhostEndPlatform"){
-                                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>0){
-                                    GoLeft();
-                                } else {//ghost is on end platform
-                                    if (Eray.Length>1){
-                                        //make sure another end platform isn't in the way
-                                        if (Vector3.Distance(Eray[1].transform.position,castPos.position)!=gridSize){
-                                            GoLeft();
-                                        }
-                                    } else {// no end platform in the way
-                                        GoLeft();
-                                    }
-                                }
-                            }
-                        } else {
-                            GoLeft();
-                        }
+                        EndMove(Eray,"GhostEndPlatform",myGoDir);
                     }
                 } else {
                     RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.left*gridSize*2,LayerMask.GetMask("Gravestone"));
@@ -142,53 +146,45 @@ public class GridMovement : MonoBehaviour
                         if (Rray.Length==1){
                             if (charCanPush){
                                 // make sure player is 1 away from edge so they don't push tomb over gate
-                                if (gridX>1 && charCanPush){
+                                if (gridX>1){
                                     //make sure endplatform isn't in the way so it doesn't push tomb over endplatform
                                     if (Eray.Length>0){
                                         if (Vector3.Distance(Eray[0].transform.position,castPos.position)!=gridSize*2){
                                             movingTomb = Rray[0].transform;
-                                            GoLeft();
+                                            EndMove(Eray,"ZombieEndPlatform",myGoDir);
                                         }
                                     } else {
                                         movingTomb = Rray[0].transform;
-                                        GoLeft();
+                                        myGoDir();
                                     }
                                 }
                             } else {
                                 // if char is not right next to tomb
                                 if (Vector3.Distance(Rray[0].transform.position,castPos.position)>gridSize){
-                                    GoLeft();
+                                    EndMove(Eray,"SkeleEndPlatform",myGoDir);
                                 }
                             }
                         } else { // no tomb
-                            GoLeft();
+                            if (Eray.Length == 0){
+                                myGoDir();
+                            } else {
+                                if (charCanPush){
+                                    EndMove(Eray,"ZombieEndPlatform",myGoDir);
+                                } else {
+                                    EndMove(Eray,"SkeleEndPlatform",myGoDir);
+                                }
+                            }
                         }
                     }
                 }
                 transform.localScale = new Vector3(playerScale,playerScale,playerScale);
             } else if (Input.GetKeyDown(KeyCode.S)){ // it do go down!! :V
+                myGoDir = GoDown;
                 RaycastHit2D[] Eray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize*2,LayerMask.GetMask("EndPlatform"));
                 if (ghost){
                     RaycastHit2D[] Gray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize,LayerMask.GetMask("GhostWall"));
                     if (Gray.Length==0){
-                        if (Eray.Length>0){
-                            if (Eray[0].collider.name=="GhostEndPlatform"){
-                                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>0){
-                                    GoDown();
-                                } else {//ghost is on end platform
-                                    if (Eray.Length>1){
-                                        //make sure another end platform isn't in the way
-                                        if (Vector3.Distance(Eray[1].transform.position,castPos.position)!=gridSize){
-                                            GoDown();
-                                        }
-                                    } else {// no end platform in the way
-                                        GoDown();
-                                    }
-                                }
-                            }
-                        } else {
-                            GoDown();
-                        }
+                        EndMove(Eray,"GhostEndPlatform",myGoDir);
                     }
                 } else {
                     RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.down*gridSize*2,LayerMask.GetMask("Gravestone"));
@@ -196,52 +192,44 @@ public class GridMovement : MonoBehaviour
                         if (Rray.Length==1){
                             if (charCanPush){
                                 // make sure player is 1 away from edge so they don't push tomb over gate
-                                if (gridY>1 && charCanPush){
+                                if (gridY>1){
                                     //make sure endplatform isn't in the way so it doesn't push tomb over endplatform
                                     if (Eray.Length>0){
                                         if (Vector3.Distance(Eray[0].transform.position,castPos.position)!=gridSize*2){
                                             movingTomb = Rray[0].transform;
-                                            GoDown();
+                                            EndMove(Eray,"ZombieEndPlatform",myGoDir);
                                         }
                                     } else {
                                         movingTomb = Rray[0].transform;
-                                        GoDown();
+                                        myGoDir();
                                     }
                                 }
                             } else {
                                 // if char is not right next to tomb
                                 if (Vector3.Distance(Rray[0].transform.position,castPos.position)>gridSize){
-                                    GoDown();
+                                    EndMove(Eray,"SkeleEndPlatform",myGoDir);
                                 }
                             }
                         } else { // no tomb
-                            GoDown();
+                            if (Eray.Length == 0){
+                                myGoDir();
+                            } else {
+                                if (charCanPush){
+                                    EndMove(Eray,"ZombieEndPlatform",myGoDir);
+                                } else {
+                                    EndMove(Eray,"SkeleEndPlatform",myGoDir);
+                                }
+                            }
                         }
                     }
                 }
             } else if (Input.GetKeyDown(KeyCode.W)){
+                myGoDir = GoUp;
                 RaycastHit2D[] Eray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize*2,LayerMask.GetMask("EndPlatform"));
                 if (ghost){
                     RaycastHit2D[] Gray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize,LayerMask.GetMask("GhostWall"));
                     if (Gray.Length==0){
-                        if (Eray.Length>0){
-                            if (Eray[0].collider.name=="GhostEndPlatform"){
-                                if (Vector3.Distance(Eray[0].transform.position,castPos.position)>0){
-                                    GoUp();
-                                } else {//ghost is on end platform
-                                    if (Eray.Length>1){
-                                        //make sure another end platform isn't in the way
-                                        if (Vector3.Distance(Eray[1].transform.position,castPos.position)!=gridSize){
-                                            GoUp();
-                                        }
-                                    } else {// no end platform in the way
-                                        GoUp();
-                                    }
-                                }
-                            }
-                        } else {
-                            GoUp();
-                        }
+                        EndMove(Eray,"GhostEndPlatform",myGoDir);
                     }
                 } else {
                     RaycastHit2D[] Rray = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.up*gridSize*2,LayerMask.GetMask("Gravestone"));
@@ -249,26 +237,34 @@ public class GridMovement : MonoBehaviour
                         if (Rray.Length==1){
                             if (charCanPush){
                                 // make sure player is 1 away from edge so they don't push tomb over gate
-                                if (gridY<GRIDH-1 && charCanPush){
+                                if (gridY<GRIDH-1){
                                     //make sure endplatform isn't in the way so it doesn't push tomb over endplatform
                                     if (Eray.Length>0){
                                         if (Vector3.Distance(Eray[0].transform.position,castPos.position)!=gridSize*2){
                                             movingTomb = Rray[0].transform;
-                                            GoUp();
+                                            EndMove(Eray,"ZombieEndPlatform",myGoDir);
                                         }
                                     } else {
                                         movingTomb = Rray[0].transform;
-                                        GoUp();
+                                        myGoDir();
                                     }
                                 }
                             } else {
                                 // if char is not right next to tomb
                                 if (Vector3.Distance(Rray[0].transform.position,castPos.position)>gridSize){
-                                    GoUp();
+                                    EndMove(Eray,"SkeleEndPlatform",myGoDir);
                                 }
                             }
                         } else { // no tomb
-                            GoUp();
+                            if (Eray.Length == 0){
+                                myGoDir();
+                            } else {
+                                if (charCanPush){
+                                    EndMove(Eray,"ZombieEndPlatform",myGoDir);
+                                } else {
+                                    EndMove(Eray,"SkeleEndPlatform",myGoDir);
+                                }
+                            }
                         }
                     }
                 }
@@ -310,6 +306,7 @@ public class GridMovement : MonoBehaviour
             }
         }
     }
+
     void GoRight(){
         gridX++;
         hMov = 1;
