@@ -84,6 +84,18 @@ public class GridMovement : MonoBehaviour
             Debug.DrawLine(castPos.position,castPos.position+Vector3.left*gridSize*2,Color.blue);
             Debug.DrawLine(castPos.position,castPos.position+Vector3.up*gridSize*2,Color.green);
             Debug.DrawLine(castPos.position,castPos.position+Vector3.down*gridSize*2,Color.magenta);
+            //set dancing
+            RaycastHit2D[] EndRay = Physics2D.LinecastAll(castPos.position,castPos.position+Vector3.right*gridSize*2,LayerMask.GetMask("EndPlatform"));
+            if (EndRay.Length>0){
+                if (Vector3.Distance(EndRay[0].transform.position,castPos.position)==0){
+                    animator.SetBool("dancing",true);
+                } else {
+                    animator.SetBool("dancing",false);
+                }
+            } else {
+                animator.SetBool("dancing",false);
+            }
+
             //movingTomb transform is set in INPUTMOVE
             #region INPUTMOVE
             if (Input.GetKeyDown(KeyCode.D)){
