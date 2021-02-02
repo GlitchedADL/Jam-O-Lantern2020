@@ -16,6 +16,8 @@ public class GridMovement : MonoBehaviour
     [SerializeField] Transform castPos;
     [SerializeField] bool ghost;
     Transform movingTomb = null;
+
+    public bool completed;
     int gridXlast = 0;
     int gridYlast = 0;
     const int GRIDW = 14;
@@ -89,11 +91,15 @@ public class GridMovement : MonoBehaviour
             if (EndRay.Length>0){
                 if (Vector3.Distance(EndRay[0].transform.position,castPos.position)==0){
                     animator.SetBool("dancing",true);
+                    completed = true;
+
                 } else {
                     animator.SetBool("dancing",false);
+                    completed = false;
                 }
             } else {
                 animator.SetBool("dancing",false);
+                completed = false;
             }
 
             //movingTomb transform is set in INPUTMOVE
